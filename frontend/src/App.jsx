@@ -5,6 +5,11 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 
+import Analytics from "./pages/Analytics";
+import Users from "./pages/Users";
+import Tasks from "./pages/Tasks";
+import ActivityLogs from "./pages/ActivityLogs";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 
@@ -31,7 +36,27 @@ function App() {
             <AdminDashboard />
           </AdminRoute>
         }
-      />
+      >
+        <Route
+          index
+          element={<Analytics />}
+        />
+
+        <Route
+          path="users"
+          element={<Users />}
+        />
+
+        <Route
+          path="tasks"
+          element={<Tasks />}
+        />
+
+        <Route
+          path="activity"
+          element={<ActivityLogs />}
+        />
+      </Route>
     </Routes>
   );
 }
