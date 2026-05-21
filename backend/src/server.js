@@ -28,7 +28,7 @@ app.use("/api/activity", activityRoutes);
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "API is running",
+    message: "Avidus API is running",
   });
 });
 
