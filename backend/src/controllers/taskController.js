@@ -1,4 +1,5 @@
 import Task from "../models/Task.js";
+import logActivity from "../utils/logActivity.js";
 
 export const createTask = async (req, res) => {
   try {
@@ -9,6 +10,12 @@ export const createTask = async (req, res) => {
       description,
       createdBy: req.user._id,
     });
+
+    await logActivity(
+      req.user._id,
+      "CREATE_TASK",
+      `Created task: ${task.title}`
+    );
 
     res.status(201).json({
       success: true,
@@ -65,6 +72,12 @@ export const updateTask = async (req, res) => {
 
     const updatedTask = await task.save();
 
+    await logActivity(
+      req.user._id,
+      "UPDATE_TASK",
+      `Updated task: ${task.title}`
+    );
+
     res.status(200).json({
       success: true,
       message: "Task updated successfully",
@@ -97,6 +110,12 @@ export const deleteTask = async (req, res) => {
     }
 
     await task.deleteOne();
+
+    await logActivity(
+      req.user._id,
+      "DELETE_TASK",
+      `Deleted task: ${task.title}`
+    );
 
     res.status(200).json({
       success: true,

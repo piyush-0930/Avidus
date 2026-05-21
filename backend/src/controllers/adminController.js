@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Task from "../models/Task.js";
+import logActivity from "../utils/logActivity.js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -30,6 +31,12 @@ export const deleteUser = async (req, res) => {
 
     await user.deleteOne();
 
+    await logActivity(
+      req.user._id,
+      "DELETE_USER",
+      `Deleted user: ${user.email}`
+    );
+
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
@@ -58,6 +65,12 @@ export const updateUserStatus = async (req, res) => {
     user.status = status;
 
     await user.save();
+
+    await logActivity(
+      req.user._id,
+      "UPDATE_USER_STATUS",
+      `Updated ${user.email} status to ${status}`
+    );
 
     res.status(200).json({
       success: true,
@@ -103,6 +116,12 @@ export const deleteAnyTask = async (req, res) => {
     }
 
     await task.deleteOne();
+
+    await logActivity(
+      req.user._id,
+      "ADMIN_DELETE_TASK",
+      `Deleted task: ${task.title}`
+    );
 
     res.status(200).json({
       success: true,

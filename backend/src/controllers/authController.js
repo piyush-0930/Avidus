@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
+import logActivity from "../utils/logActivity.js";
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -29,6 +30,12 @@ export const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
     });
+
+    await logActivity(
+      user._id,
+      "REGISTER",
+      `${user.name} registered`
+    );
 
     res.status(201).json({
       success: true,
@@ -77,6 +84,12 @@ export const loginUser = async (req, res) => {
         message: "Invalid credentials",
       });
     }
+
+    await logActivity(
+      user._id,
+      "LOGIN",
+      `${user.name} logged in`
+    );
 
     res.status(200).json({
       success: true,
